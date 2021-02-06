@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.netology.domain.Book;
 import ru.netology.domain.Product;
 import ru.netology.domain.Smartphone;
+import ru.netology.exceptions.NotFoundException;
 import ru.netology.repository.ProductRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -74,5 +75,10 @@ class ProductManagerEmptyTest {
     void matches() {
         boolean actual = manager.matches(book1,"blabla");
         assertEquals(false,actual);
+    }
+
+    @Test
+    void shouldThrowNotFoundException(){
+        assertThrows(NotFoundException.class, () -> repository.removeById(2));
     }
 }

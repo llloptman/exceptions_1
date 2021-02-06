@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import ru.netology.domain.Book;
 import ru.netology.domain.Product;
 import ru.netology.domain.Smartphone;
+import ru.netology.exceptions.NotFoundException;
 import ru.netology.repository.ProductRepository;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 //@ExtendWith(MockitoExtension.class)
 class ProductManagerFewElementsTest {
@@ -145,6 +145,20 @@ class ProductManagerFewElementsTest {
         System.out.println("actual Not Book nor Smartphone");
         boolean actualNotBookNorSmartphone = manager.matches(product, "CHINA");
         assertEquals(false, actualNotBookNorSmartphone);
+    }
 
+    @Test
+    void shouldThrowNotFoundException(){
+        assertThrows(NotFoundException.class, () -> repository.removeById(2));
+    }
+
+    @Test
+    void shouldDelete(){
+        repository.removeById(1);
+        Product[] actual = repository.getAll();
+        Product[] expected = new Product[2]; // изначально добавлено 3 продукта и добавлен еще 1
+        expected[0] = book3; //в зависимости от того, что добавляли в BeforeEach
+        expected[1] = product;
+        assertArrayEquals(expected,actual);
     }
 }

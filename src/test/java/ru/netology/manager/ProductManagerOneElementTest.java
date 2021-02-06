@@ -5,10 +5,12 @@ import org.junit.jupiter.api.Test;
 import ru.netology.domain.Book;
 import ru.netology.domain.Product;
 import ru.netology.domain.Smartphone;
+import ru.netology.exceptions.NotFoundException;
 import ru.netology.repository.ProductRepository;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.io.UncheckedIOException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 //@ExtendWith(MockitoExtension.class)
 class ProductManagerOneElementTest {
@@ -127,5 +129,18 @@ class ProductManagerOneElementTest {
         boolean actualNotBookNorSmartphone = managerSmartphones.matches(product, "CHINA");
         assertEquals(false, actualNotBookNorSmartphone);
 
+    }
+
+    @Test
+    void shouldThrowNotFoundException(){
+        assertThrows(NotFoundException.class, () -> repositorySmartphones.removeById(2));
+    }
+
+    @Test
+    void shouldDelete(){
+        repositorySmartphones.removeById(1);
+        Product[] actual = repositorySmartphones.getAll();
+        Product[] expected = new Product[0];
+        assertArrayEquals(expected,actual);
     }
 }
